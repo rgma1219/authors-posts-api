@@ -1,0 +1,24 @@
+{
+    "name": "api-miniblog_reygabriel",
+    "version": "1.0.0",
+    "description": "API REST con Express y PostgreSQL para gestión de authors y posts - Proyecto Integrador Módulo 2, Bootcamp Full Stack Development (Henry).",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node --watch server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "express",
+        "postgresql",
+        "rest-api",
+        "crud"
+    ],
+    "author": "reygabriel",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "express": "^5.2.1",
+        "pg": "^8.23.0"
+    }
+}
