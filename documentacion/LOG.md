@@ -72,3 +72,29 @@
   devuelve `404` con mensaje descriptivo.
 - Commit: "feat: middleware global de manejo de errores (AppError, asyncHandler,
   errorHandler) y ruta 404"
+
+## Etapa 2 — CRUD completo de Authors (fecha: 02/09/2026)
+
+- Creación de `src/utils/validators.js`: validación manual (sin librerías externas) de
+  campos obligatorios y formato de email con regex, reutilizada en POST y PUT.
+- Creación de `src/middlewares/requestLogger.js`: middleware nativo de logging (usando
+  el evento 'finish' de `res`) para visibilidad de todos los requests en consola,
+  sin usar `morgan`.
+- Implementación de los 5 endpoints CRUD en arquitectura de capas (routes → controllers
+  → services):
+    - `GET /authors`: listado completo, ordenado por id.
+    - `GET /authors/:id`: detalle por id, 404 si no existe.
+    - `POST /authors`: creación con validación de campos obligatorios, formato de email,
+      y unicidad (capturando el código de error 23505 de PostgreSQL para devolver 409).
+    - `PUT /authors/:id`: actualización completa (reemplazo total, semántica REST correcta),
+      exige name y email siempre; se decidió no implementar PATCH para mantener el alcance
+      acotado según la consigna.
+    - `DELETE /authors/:id`: borrado con status 204 (sin body, según estándar HTTP);
+      se verificó el comportamiento ON DELETE CASCADE (al borrar un author, sus posts
+      asociados se eliminan automáticamente a nivel de base de datos).
+- Todas las queries parametrizadas ($1, $2, ...) para prevenir SQL injection.
+- Códigos HTTP usados: 200 (OK), 201 (Created), 204 (No Content), 400 (Bad Request),
+  404 (Not Found), 409 (Conflict) — aplicados según semántica REST correspondiente.
+- Verificación manual completa de los 5 endpoints con Thunder Client, incluyendo casos
+  de éxito y de error.
+- Commit: "feat: CRUD completo de authors con validaciones y manejo de errores"

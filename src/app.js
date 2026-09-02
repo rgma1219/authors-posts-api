@@ -1,11 +1,16 @@
 const express = require("express");
 const pool = require("./db/pool");
 const errorHandler = require("./middlewares/errorHandler");
+const requestLogger = require("./middlewares/requestLogger");
+const authorsRoutes = require("./routes/authors.routes");
 
 const app = express();
 
 // Middleware nativo de Express para parsear JSON en el body de los requests
 app.use(express.json());
+
+// Middleware de logging nativo
+app.use(requestLogger);
 
 // Endpoint de salud: confirma que el servidor responde Y que la conexión a la DB funciona
 app.get("/health", async (req, res) => {
@@ -24,6 +29,7 @@ app.get("/health", async (req, res) => {
 });
 
 // (Acá van las rutas de /authors y /posts
+app.use("/authors", authorsRoutes);
 
 // Middleware para rutas no encontradas (404) - va DESPUÉS de todas las rutas
 app.use((req, res) => {

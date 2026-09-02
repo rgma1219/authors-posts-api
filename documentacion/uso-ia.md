@@ -106,3 +106,49 @@
   con un wrapper propio en vez de una dependencia.
 - Orden correcto de middlewares en Express: rutas → 404 handler → error handler (siempre
   al final).
+
+## Sesión 2 (continuación) — Etapa 2: CRUD de Authors
+
+**Prompts principales y resultados:**
+
+11. Prompt: Implementación de GET /authors y GET /authors/:id.
+    Resultado: Se introdujo el concepto de queries parametrizadas ($1, $2) como
+    prevención de SQL injection, explicando por qué nunca concatenar valores en
+    template literals dentro de una query SQL.
+
+![Implementación de GET /authors](./capturas/7.png)
+
+12. Prompt: Implementación de POST /authors con validaciones. Creación del middleware de logging nativo.
+    Resultado: Validación manual (sin express-validator/zod) de campos obligatorios
+    y formato de email; manejo del código de error 23505 de PostgreSQL para traducir
+    violación de unicidad en respuesta 409 con mensaje claro.
+
+    ![Implementación de POST - Validaciones](./capturas/8.png)
+
+    ![Creación de middleware para avisar de cada request en consola](./capturas/9.png)
+
+13. Prompt: Consulta sobre si PUT debía aceptar actualizaciones parciales.
+    Resultado: Se explicó la diferencia semántica entre PUT (reemplazo completo) y
+    PATCH (actualización parcial) en REST. Se decidió mantener PUT como reemplazo
+    completo, alineado con la consigna y sin agregar PATCH, para respetar el alcance
+    acotado del proyecto y los principios REST evaluados en la rúbrica.
+
+    ![Explicación de PUT / PATCH](./capturas/10.png)
+
+14. Prompt: Implementación de DELETE /authors/:id y duda sobre por qué no devuelve
+    mensaje en el body.
+    Resultado: Se explicó la semántica del status 204 No Content (no debe llevar body
+    por especificación HTTP) y cómo el cliente debe usar el status code, no el body,
+    para confirmar éxito. Se verificó el comportamiento ON DELETE CASCADE en la base
+    de datos tras un borrado exitoso.
+
+    ![Explicación de falta de mensaje de estado en método DELETE](./capturas/11.png)
+
+**Aprendizajes clave:**
+
+- Prevención de SQL injection mediante queries parametrizadas.
+- Manejo de errores específicos de PostgreSQL (código 23505) traducidos a respuestas
+  HTTP semánticamente correctas.
+- Diferencia semántica REST entre PUT y PATCH, y cuándo usar cada uno.
+- Uso correcto de status 204 No Content y su implicancia de no llevar body.
+- Verificación de integridad referencial (ON DELETE CASCADE) a nivel de base de datos.
