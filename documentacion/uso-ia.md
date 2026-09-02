@@ -29,3 +29,58 @@
 - Separación en capas (routes/controllers/services) desde el inicio del proyecto.
 - Principio de mínimo privilegio aplicado a usuarios de base de datos.
 - Alternativas nativas de Node a paquetes npm comunes (dotenv → loadEnvFile).
+
+## Sesión 1 (continuación) — Conexión Express-PostgreSQL
+
+**Prompts principales y resultados:**
+
+5. Prompt: Implementación del módulo de conexión a PostgreSQL con Pool.
+   Resultado: Se explicó la diferencia entre Pool y Client, y por qué Pool es obligatorio
+   para una API que atiende múltiples requests concurrentes. Código de `src/db/pool.js`
+   aprovechando las variables de entorno estándar del driver `pg`.
+
+    ![Conexión a PostgreSQL con Pool](./capturas/3.png)
+
+6. Prompt: Creación de servidor Express mínimo con endpoint de verificación.
+   Resultado: Separación entre `app.js` (configuración de Express) y `server.js` (arranque
+   del servidor), patrón que facilita testing en etapas posteriores. Endpoint `/health`
+   con query real a la base para validar la conexión de punta a punta.
+
+    ![Explicación loadEnvFile() y resultado de la prueba de salud](./capturas/4.png)
+
+**Aprendizajes clave:**
+
+- Diferencia entre `Pool` y `Client` en el driver `pg`, y por qué Pool es el estándar
+  para APIs REST.
+- Importancia del orden de carga: variables de entorno deben cargarse antes de crear
+  el Pool de conexiones.
+- Separación `app.js`/`server.js` como patrón que facilita testing automatizado.
+
+## Sesión 1 (continuación) — Etapa 1: Modelado de datos
+
+**Prompts principales y resultados:**
+
+7. Prompt: Diseño de constraints y tipos de datos para el schema (authors/posts) según
+   atributos definidos en la consigna.
+   Resultado: Tabla de tipos y constraints (SERIAL, VARCHAR, TEXT, BOOLEAN, TIMESTAMP,
+   NOT NULL, UNIQUE) justificando cada decisión contra los requisitos de la rúbrica.
+
+    ![Definición de entidades y atributos según consigna](./capturas/5.png)
+
+8. Prompt: Consulta sobre comportamiento de FK al eliminar un author con posts asociados.
+   Resultado: Explicación de CASCADE vs RESTRICT; se eligió CASCADE.
+
+9. Prompt: Troubleshooting de caracteres acentuados mostrados incorrectamente en consola
+   tras ejecutar el seed (ej. "García" → "Garc├¡a").
+   Resultado: Diagnóstico paso a paso descartando causas (encoding del archivo, codepage
+   de Windows) hasta confirmar con `length()`/`octet_length()` en SQL que los datos
+   estaban correctamente almacenados en UTF-8, y que el problema era únicamente de
+   renderizado en la terminal Git Bash/mintty, sin impacto real en la aplicación.
+
+**Aprendizajes clave:**
+
+- Diseño de constraints relacionales (PK, FK, UNIQUE, DEFAULT) alineado a requisitos
+  de negocio y de rúbrica.
+- Diferencia entre CASCADE y RESTRICT en foreign keys.
+- Técnica de diagnóstico de encoding usando `length()` vs `octet_length()` en PostgreSQL
+  para distinguir un problema real de datos de un problema de visualización en terminal.
