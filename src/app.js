@@ -1,0 +1,25 @@
+const express = require("express");
+const pool = require("./db/pool");
+
+const app = express();
+
+// Middleware nativo de Express para parsear JSON en el body de los requests
+app.use(express.json());
+
+// Endpoint de salud: confirma que el servidor responde Y que la conexión a la DB funciona
+app.get("/health", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW()");
+        res.json({
+            status: "ok",
+            db_time: result.rows[0].now,
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "No se pudo conectar a la base de datos",
+        });
+    }
+});
+
+module.exports = app;

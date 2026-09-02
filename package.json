@@ -1,5 +1,5 @@
 {
-    "name": "api-miniblog_reygabriel",
+    "name": "authors-posts-api",
     "version": "1.0.0",
     "description": "API REST con Express y PostgreSQL para gestión de authors y posts - Proyecto Integrador Módulo 2, Bootcamp Full Stack Development (Henry).",
     "main": "server.js",
