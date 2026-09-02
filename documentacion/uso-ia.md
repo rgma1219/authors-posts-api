@@ -84,3 +84,25 @@
 - Diferencia entre CASCADE y RESTRICT en foreign keys.
 - Técnica de diagnóstico de encoding usando `length()` vs `octet_length()` en PostgreSQL
   para distinguir un problema real de datos de un problema de visualización en terminal.
+
+## Sesión 2 — Etapa 2: Manejo global de errores
+
+**Prompts principales y resultados:**
+
+10. Prompt: Diseño de un sistema de manejo de errores centralizado antes de construir
+    el CRUD, para evitar refactorizar cada controller después.
+    Resultado: Arquitectura de 3 piezas (AppError, asyncHandler, errorHandler middleware),
+    todas con JavaScript nativo, sin dependencias externas como express-async-errors.
+    Se explicó la convención de Express de identificar middlewares de error por su firma
+    de 4 parámetros, y la importancia del orden de declaración de middlewares en app.js.
+
+    ![Armado del middleware global de manejo de errores](./capturas/6.png)
+
+**Aprendizajes clave:**
+
+- Patrón de clase de error personalizada (AppError) para distinguir errores operacionales
+  de bugs internos.
+- Por qué Express no captura automáticamente errores de funciones async, y cómo resolverlo
+  con un wrapper propio en vez de una dependencia.
+- Orden correcto de middlewares en Express: rutas → 404 handler → error handler (siempre
+  al final).

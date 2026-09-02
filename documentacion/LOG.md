@@ -54,3 +54,21 @@
   la base — el problema era exclusivamente de renderizado visual de la terminal
   (mintty/Git Bash), sin impacto funcional en la API.
 - Commit: "feat: creacion de schema (authors, posts) y script de datos de prueba (seed)"
+
+## Etapa 2 (inicio) — Manejo global de errores (fecha: 02/09/2026)
+
+- Creación de `src/utils/AppError.js`: clase de error personalizada que extiende `Error`
+  nativo, agregando `statusCode` e `isOperational` para distinguir errores de negocio
+  esperados de bugs internos.
+- Creación de `src/utils/asyncHandler.js`: wrapper nativo (sin dependencias como
+  `express-async-errors`) que envuelve controllers async y redirige automáticamente
+  cualquier error a `next()`, evitando repetir try/catch en cada controller.
+- Creación de `src/middlewares/errorHandler.js`: middleware final de Express (firma de
+  4 parámetros) que centraliza la respuesta de error, devolviendo status code y mensaje
+  apropiados, y logueando el error completo en consola para debugging.
+- Middleware adicional en `app.js` para capturar rutas no encontradas (404) con
+  respuesta JSON consistente.
+- Verificación: `/health` sigue funcionando correctamente; ruta inexistente (`/hola`)
+  devuelve `404` con mensaje descriptivo.
+- Commit: "feat: middleware global de manejo de errores (AppError, asyncHandler,
+  errorHandler) y ruta 404"

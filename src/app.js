@@ -1,5 +1,6 @@
 const express = require("express");
 const pool = require("./db/pool");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -21,5 +22,18 @@ app.get("/health", async (req, res) => {
         });
     }
 });
+
+// (Acá van las rutas de /authors y /posts
+
+// Middleware para rutas no encontradas (404) - va DESPUÉS de todas las rutas
+app.use((req, res) => {
+    res.status(404).json({
+        status: "error",
+        message: `Ruta no encontrada: ${req.method} ${req.originalUrl}`,
+    });
+});
+
+// Middleware de manejo de errores - SIEMPRE al final, después de todo lo demás
+app.use(errorHandler);
 
 module.exports = app;
