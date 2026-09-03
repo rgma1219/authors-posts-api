@@ -98,3 +98,23 @@
 - Verificación manual completa de los 5 endpoints con Thunder Client, incluyendo casos
   de éxito y de error.
 - Commit: "feat: CRUD completo de authors con validaciones y manejo de errores"
+
+## Etapa 3 (parcial) — Endpoints GET de Posts (fecha: 02/09/2026)
+
+- Implementación de `GET /posts` (listado completo) y `GET /posts/:id` (detalle,
+  con 404 si no existe), siguiendo el mismo patrón de capas usado en Authors.
+- Implementación del endpoint especial requerido por la rúbrica:
+  `GET /posts/author/:authorId`. Decisión de diseño: si el author no existe, se
+  devuelve 404 (no un array vacío), para diferenciar claramente "author sin posts"
+  de "author inexistente".
+- Reutilización de `authorsService.getById()` desde `posts.service.js` para validar
+  la existencia del author antes de buscar sus posts, evitando duplicar lógica de
+  validación entre ambos services.
+- Corrección de errores de aprendizaje durante el desarrollo: falta de `await` en
+  una llamada async, y confusión inicial entre filtrar por `id` (PK de posts) vs.
+  `author_id` (FK hacia authors) — buen ejercicio para afianzar el modelo relacional.
+- Decisión sobre orden de rutas en Express: `/author/:authorId` debe declararse
+  antes que `/:id`, ya que Express evalúa rutas en orden y `/:id` matchea
+  cualquier valor (incluida la palabra "author") si se declara primero.
+- Commit: "feat: endpoints GET de posts (listar, por id, por author) reutilizando
+  authorsService"

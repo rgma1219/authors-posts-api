@@ -152,3 +152,37 @@
 - Diferencia semántica REST entre PUT y PATCH, y cuándo usar cada uno.
 - Uso correcto de status 204 No Content y su implicancia de no llevar body.
 - Verificación de integridad referencial (ON DELETE CASCADE) a nivel de base de datos.
+
+## Sesión 3 — Etapa 3: Endpoints GET de Posts
+
+**Prompts principales y resultados:**
+
+15. Prompt: Implementación guiada (con intentos propios del alumno) de GET /posts,
+    GET /posts/:id y GET /posts/author/:authorId.
+    Resultado: Se revisó código propio en cada paso (code review), corrigiendo dos
+    errores puntuales: falta de `await` en una llamada a función async, y query
+    filtrando por la columna incorrecta (`id` en vez de `author_id`).
+
+    ![Patrón de diseño de los archivos para el GET de Posts](./capturas/12.png)
+
+16. Prompt: Discusión de diseño sobre qué debía pasar si /posts/author/:authorId
+    recibe un authorId inexistente (404 vs array vacío).
+    Resultado: Se eligió devolver 404, reutilizando authorsService.getById() para
+    no duplicar la lógica de verificación de existencia de un author.
+
+    ![Debate sobre criterio de diseño de APIs](./capturas/13.png)
+
+17. Prompt: Consulta sobre el orden correcto de declaración de rutas en Express
+    cuando coexisten un patrón específico (/author/:authorId) y uno genérico (/:id).
+    Resultado: Explicación de por qué Express evalúa rutas en orden secuencial y
+    usa la primera que matchea, y por qué las rutas específicas deben declararse
+    antes que las genéricas con parámetros comodín.
+
+    ![Ubicación de rutas en orden para Express](./capturas/14.png)
+
+**Aprendizajes clave:**
+
+- Importancia de `await` en llamadas a funciones async dentro de otra función async.
+- Diferencia entre filtrar por primary key (id) y por foreign key (author_id).
+- Reutilización de lógica de validación entre services relacionados (posts → authors).
+- Orden de declaración de rutas en Express y su impacto en el matching de requests.

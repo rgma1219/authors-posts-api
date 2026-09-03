@@ -3,6 +3,7 @@ const pool = require("./db/pool");
 const errorHandler = require("./middlewares/errorHandler");
 const requestLogger = require("./middlewares/requestLogger");
 const authorsRoutes = require("./routes/authors.routes");
+const postsRoutes = require("./routes/posts.routes");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.get("/health", async (req, res) => {
 
 // (Acá van las rutas de /authors y /posts
 app.use("/authors", authorsRoutes);
+app.use("/posts", postsRoutes);
 
 // Middleware para rutas no encontradas (404) - va DESPUÉS de todas las rutas
 app.use((req, res) => {
