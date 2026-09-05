@@ -118,3 +118,33 @@
   cualquier valor (incluida la palabra "author") si se declara primero.
 - Commit: "feat: endpoints GET de posts (listar, por id, por author) reutilizando
   authorsService"
+
+## Etapa 3 — CRUD completo de Posts (fecha: 03/09/2026)
+
+- Implementación de `POST /posts`: validación de campos obligatorios (author_id, title,
+  content) mediante `validatePostInput`, y verificación de existencia del author
+  reutilizando `authorsService.getById()` antes del INSERT (evita posts huérfanos con
+  author_id inexistente). `published` es opcional, con default `false` si no se envía.
+- Decisión de diseño: `PUT /posts/:id` no permite modificar `author_id` (queda fijo
+  desde la creación). Justificación: en un escenario real con autenticación, el autor
+  de un post debería ser inmutable, ya que representa quién lo publicó originalmente.
+  Se creó una función de validación separada (`validatePostUpdateInput`) que solo exige
+  `title` y `content`, sin pedir `author_id`.
+- Nota de comportamiento documentada: al ser `PUT` un reemplazo completo (semántica REST
+  estricta), si no se envía el campo `published`, este se reinicia a `false` (no conserva
+  el valor previo). Se decidió mantener este comportamiento por consistencia con los
+  principios REST, documentándolo explícitamente para quien consuma la API. Pendiente de
+  consulta con el instructor para validar el criterio.
+- Implementación de `DELETE /posts/:id`, confirmando que no existen tablas dependientes
+  de `posts` (no hay comportamiento en cascada a verificar en esta dirección).
+- Errores de tipeo detectados y corregidos durante el desarrollo (variable renombrada
+  parcialmente en `getByAuthorId`, nombre de servicio mal escrito en `deletePost`) —
+  buen ejercicio de revisión de código y refuerzo de la importancia de usar "Rename
+  Symbol" del editor al renombrar variables.
+- CRUD de Posts completo y verificado con Thunder Client: los 6 endpoints
+  (GET listar, GET por id, GET por author, POST, PUT, DELETE) probados con casos de
+  éxito y de error.
+- Commit: "feat: CRUD completo de posts con validaciones, endpoint por author y
+  manejo de errores"
+
+## CRUD COMPLETO DEL PROYECTO (Authors + Posts): ✅

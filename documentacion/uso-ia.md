@@ -186,3 +186,48 @@
 - Diferencia entre filtrar por primary key (id) y por foreign key (author_id).
 - Reutilización de lógica de validación entre services relacionados (posts → authors).
 - Orden de declaración de rutas en Express y su impacto en el matching de requests.
+
+## Sesión 3 (continuación) — Etapa 3: CRUD completo de Posts
+
+**Prompts principales y resultados:**
+
+18. Prompt: Implementación guiada de POST /posts con validación de author_id existente.
+    Resultado: Reutilización de authorsService.getById() en posts.service.js para
+    validar existencia del autor antes de insertar, evitando datos huérfanos.
+
+    ![Guía para escribir POST /posts](./capturas/15.png)
+
+19. Prompt: Consulta de diseño sobre si PUT /posts/:id debía permitir cambiar el
+    author_id de un post.
+    Resultado: Discusión de un caso de uso realista (autenticación de usuarios) para
+    fundamentar la decisión de mantener author_id inmutable tras la creación. Se separó
+    la validación de creación (validatePostInput) de la de actualización
+    (validatePostUpdateInput).
+
+    ![Decisiones con respecto a Autor para PUT](./capturas/16.png)
+
+20. Prompt: Análisis de un comportamiento inesperado detectado en pruebas: el campo
+    'published' se reiniciaba a false al hacer PUT sin enviarlo explícitamente.
+    Resultado: Se explicó que es consecuencia esperada de la semántica REST estricta
+    de PUT (reemplazo completo, no parcial). Se decidió mantener el comportamiento y
+    documentarlo explícitamente para los consumidores de la API, en vez de forzar
+    'published' como obligatorio.
+
+    ![Aclaraciones PUT /posts/:id](./capturas/17.png)
+
+21. Prompt: Implementación de DELETE /posts/:id.
+    Resultado: Se confirmó que posts no tiene tablas dependientes, por lo que no aplica
+    ningún comportamiento en cascada en esta dirección de la relación.
+
+    ![Patrón para DELETE /posts/:id](./capturas/18.png)
+
+**Aprendizajes clave:**
+
+- Diseño de inmutabilidad de campos clave (author_id) como decisión de negocio, pensando
+  en un caso de uso real con autenticación.
+- Comprensión profunda de la semántica de PUT (reemplazo completo) vs PATCH (parcial),
+  incluyendo sus efectos secundarios no siempre evidentes (pérdida de valores no enviados).
+- Importancia de nombrar consistentemente variables/servicios entre archivos para evitar
+  errores de referencia (ReferenceError) por typos.
+- Separación de funciones de validación por contexto de uso (creación vs actualización)
+  en vez de una única función con lógica condicional.

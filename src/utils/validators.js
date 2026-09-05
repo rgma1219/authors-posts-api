@@ -17,6 +17,32 @@ const validateAuthorInput = ({ name, email }) => {
     }
 };
 
+const validatePostInput = ({ author_id, title, content }) => {
+    if (!author_id) {
+        throw new AppError("Debe ingresar un id de Autor", 400);
+    }
+
+    if (!title || typeof title !== "string" || title.trim() === "") {
+        throw new AppError('El campo "title" es obligatorio', 400);
+    }
+
+    if (!content || typeof content !== "string" || content.trim() === "") {
+        throw new AppError('El campo "content" es obligatorio', 400);
+    }
+};
+
+const validatePostUpdateInput = ({ title, content }) => {
+    if (!title || typeof title !== "string" || title.trim() === "") {
+        throw new AppError('El campo "title" es obligatorio', 400);
+    }
+
+    if (!content || typeof content !== "string" || content.trim() === "") {
+        throw new AppError('El campo "content" es obligatorio', 400);
+    }
+};
+
 module.exports = {
     validateAuthorInput,
+    validatePostInput,
+    validatePostUpdateInput,
 };
