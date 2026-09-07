@@ -177,3 +177,26 @@
   conexión real a PostgreSQL.
 - Commit: "test: configuracion inicial de Vitest + Supertest, primer test con mock
   via vi.spyOn"
+
+## Etapa 4 (continuación) — Suite de tests completa (fecha: 07/09/2026)
+
+- Completada la suite de tests con mocks (sin conexión a base de datos real),
+  usando el patrón `vi.spyOn(servicioReal, "metodo")` sobre el objeto real
+  compartido vía `require()`, validado en la sesión anterior.
+- `authors.test.js` (5 tests):
+    - GET /authors → 200 con lista simulada.
+    - GET /authors/:id → 200 (éxito) y 404 (mockRejectedValue con AppError real).
+    - POST /authors → 201 (éxito) y 400 (validación de "name" obligatorio, sin
+      necesidad de mockear el service, ya que la validación corta el flujo antes).
+- `posts.test.js` (2 tests):
+    - GET /posts → 200 con lista simulada.
+    - POST /posts → 201 (éxito).
+- Error de aprendizaje corregido: al testear "POST /posts exitoso", el body enviado
+  con `.send()` no incluía `author_id`, disparando sin querer la validación de
+  campo obligatorio (400) en vez de llegar al camino de éxito esperado (201). Buen
+  refuerzo del hábito de verificar qué campos exige la validación real antes de
+  armar el body de un test de camino feliz.
+- Total: 7 tests, todos pasando, superando el mínimo de 6 exigido por la rúbrica,
+  con cobertura de casos de éxito y error para ambas entidades.
+- Commit: "test: cobertura completa de tests con mocks para authors y posts
+  (7 tests, exito y error)"

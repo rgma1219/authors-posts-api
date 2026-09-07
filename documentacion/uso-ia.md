@@ -280,3 +280,47 @@
   en el mockeo de módulos con Vitest.
 - Uso de vi.spyOn sobre un objeto real como alternativa robusta a vi.mock en proyectos
   CommonJS.
+
+## Sesión 4 (continuación) — Suite completa de tests
+
+**Prompts principales y resultados:**
+
+25. Prompt: Construcción guiada de tests adicionales para GET /authors/:id (200/404)
+    y POST /authors (201/400), aplicando el patrón vi.spyOn ya validado.
+    Resultado: Se corrigieron errores conceptuales del alumno: mockear con un array
+    cuando la función real devuelve un objeto único; mockear con mockResolvedValue(null)
+    para simular un caso que en realidad lanza un error (AppError) en el código real,
+    en vez de usar mockRejectedValue; aserción verificando la función incorrecta del
+    mock. Se explicó la diferencia entre mockResolvedValue (camino feliz) y
+    mockRejectedValue (camino de error) según el comportamiento real de cada función.
+
+    ![Guía para construcción de test](./capturas/22.png)
+
+26. Prompt: Construcción del test de "400 por validación sin llegar al service",
+    identificando correctamente que la validación corta el flujo antes de invocar
+    authorsService.create.
+    Resultado: Se explicó por qué ese test no requiere mockear el service, y cómo usar
+    `expect(servicio.metodo).not.toHaveBeenCalled()` como aserción que confirma el
+    comportamiento interno esperado del código, no solo la respuesta HTTP.
+
+    ![Construcción del test de "400 por validación sin llegar al service"](./capturas/23.png)
+
+27. Prompt: Construcción autónoma (por el alumno) de posts.test.js con 2 casos
+    (GET /posts y POST /posts exitoso).
+    Resultado: Se detectó y corrigió un error en el body del test de POST /posts:
+    faltaba el campo author_id, disparando la validación de campo obligatorio (400)
+    en lugar de alcanzar el camino de éxito (201) que el test pretendía probar.
+
+    ![Construcción de tests de posts"](./capturas/24.png)
+
+**Aprendizajes clave:**
+
+- Diferencia entre mockResolvedValue (función que retorna normalmente) y
+  mockRejectedValue (función que lanza un error), según el comportamiento real de
+  cada función del código de producción.
+- Importancia de verificar la forma exacta del dato retornado por cada función
+  (objeto vs. array) antes de armar un mock.
+- Uso de aserciones sobre llamadas a mocks (toHaveBeenCalledTimes, not.toHaveBeenCalled)
+  para validar el comportamiento interno del código, no solo la respuesta final.
+- Necesidad de que el body de un test de "camino feliz" cumpla con todas las
+  validaciones reales del endpoint, para no disparar accidentalmente el camino de error.
