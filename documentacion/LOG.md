@@ -200,3 +200,34 @@
   con cobertura de casos de éxito y error para ambas entidades.
 - Commit: "test: cobertura completa de tests con mocks para authors y posts
   (7 tests, exito y error)"
+
+## Etapa 5 — Documentación OpenAPI (fecha: 07/09/2026)
+
+- Decisión de enfoque: `swagger-jsdoc` (genera la especificación a partir de
+  comentarios JSDoc en las rutas) + `swagger-ui-express` (interfaz interactiva en
+  `/api-docs`). Se instalaron como dependencias de producción (no dev), ya que la
+  interfaz debe estar disponible también en el entorno desplegado (Railway).
+- Creación de `src/config/swagger.js`: configuración general de la API (info, tags,
+  servers) y definición de schemas reutilizables (`Author`, `AuthorInput`, `Post`,
+  `PostInput`, `PostUpdateInput`, `Error`) mediante `components.schemas`, evitando
+  duplicar estructuras en cada endpoint.
+- Documentación completa de los 11 endpoints (5 de authors, 6 de posts) mediante
+  comentarios `@openapi` en `authors.routes.js` y `posts.routes.js`, incluyendo
+  parámetros, request bodies, y todas las respuestas posibles (200/201/204, 400,
+  404, 409) con sus schemas correspondientes.
+- Documentación explícita en `PUT /posts/:id` sobre el comportamiento de `published`
+  al no enviarse (se reinicia a `false`), coherente con la nota ya registrada en la
+  Etapa 3.
+- Montaje de la interfaz interactiva en `/api-docs` (`app.js`).
+- Creación de `scripts/generate-openapi.js` y script `docs:generate` en package.json,
+  para exportar la especificación como archivo físico `openapi.json` en la raíz del
+  proyecto (entregable explícito de la rúbrica).
+- Troubleshooting: error de ruta de módulo (`Cannot find module './config/swagger'`)
+  por archivo mal ubicado, corregido verificando la estructura de carpetas.
+- Ajuste de orden de tags en la interfaz (Authors antes de Posts), declarando
+  `tags` explícitamente en la configuración general en vez de depender del orden
+  de escaneo de archivos.
+- Verificación: interfaz Swagger UI funcional en `http://localhost:3000/api-docs`,
+  archivo `openapi.json` generado correctamente.
+- Commit: "docs: documentacion OpenAPI completa con swagger-jsdoc y
+  swagger-ui-express"

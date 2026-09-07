@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node server.js",
         "dev": "node --watch server.js",
-        "test": "vitest run"
+        "test": "vitest run",
+        "docs:generate": "node scripts/generate-openapi.js"
     },
     "keywords": [
         "express",
@@ -19,7 +20,9 @@
     "type": "commonjs",
     "dependencies": {
         "express": "^5.2.1",
-        "pg": "^8.23.0"
+        "pg": "^8.23.0",
+        "swagger-jsdoc": "^6.3.0",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
         "supertest": "^7.2.2",

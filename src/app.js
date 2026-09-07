@@ -1,3 +1,5 @@
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 const express = require("express");
 const pool = require("./db/pool");
 const errorHandler = require("./middlewares/errorHandler");
@@ -32,6 +34,7 @@ app.get("/health", async (req, res) => {
 // (Acá van las rutas de /authors y /posts
 app.use("/authors", authorsRoutes);
 app.use("/posts", postsRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware para rutas no encontradas (404) - va DESPUÉS de todas las rutas
 app.use((req, res) => {

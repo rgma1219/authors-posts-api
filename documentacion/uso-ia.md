@@ -324,3 +324,46 @@
   para validar el comportamiento interno del código, no solo la respuesta final.
 - Necesidad de que el body de un test de "camino feliz" cumpla con todas las
   validaciones reales del endpoint, para no disparar accidentalmente el camino de error.
+
+## Sesión 5 — Etapa 5: Documentación OpenAPI
+
+**Prompts principales y resultados:**
+
+28. Prompt: Definición del enfoque de documentación OpenAPI a seguir, entre YAML
+    manual, swagger-jsdoc solo, o swagger-jsdoc + swagger-ui-express.
+    Resultado: Se explicaron los trade-offs de cada opción frente a la política de
+    minimizar dependencias del proyecto, señalando que la rúbrica solo exige el
+    archivo (no la interfaz interactiva), pero que esta última suma valor. Se optó
+    por la combinación completa (swagger-jsdoc + swagger-ui-express).
+
+29. Prompt: Solicitud de generación completa de la documentación OpenAPI para
+    los 11 endpoints existentes.
+    Resultado: Se generó la configuración base con schemas reutilizables
+    (components.schemas) y los comentarios @openapi documentando cada ruta con
+    sus parámetros, request bodies y respuestas posibles, además del script para
+    exportar la especificación a un archivo openapi.json físico.
+
+    ![Generación de documentación OpenApi"](./capturas/25.png)
+
+30. Prompt: Troubleshooting de un error de módulo no encontrado al arrancar el
+    servidor tras agregar la configuración de Swagger.
+    Resultado: Se identificó que el archivo de configuración no estaba en la ruta
+    esperada (src/config/swagger.js), corregido verificando la estructura de
+    carpetas con comandos de listado. El archivo estaba mal nombrado.
+
+31. Prompt: Consulta sobre por qué el orden de las secciones en la interfaz de
+    Swagger UI no coincidía con el orden esperado (Posts antes que Authors).
+    Resultado: Se explicó que swagger-jsdoc infiere el orden de los tags del orden
+    de escaneo de archivos si no se especifica explícitamente, y se corrigió
+    declarando la propiedad `tags` de forma explícita en la configuración general.
+
+**Aprendizajes clave:**
+
+- Generación de especificaciones OpenAPI a partir de comentarios JSDoc en el código,
+  evitando mantener un archivo de documentación separado y desincronizado del código.
+- Uso de `components.schemas` para reutilizar definiciones de datos entre múltiples
+  endpoints, evitando duplicación.
+- Diferencia entre dependencias de desarrollo y de producción, y cómo esa distinción
+  afecta qué se instala con `-D`.
+- Importancia de regenerar artefactos derivados (como el archivo openapi.json) cada
+  vez que cambia su fuente (los comentarios en las rutas).
