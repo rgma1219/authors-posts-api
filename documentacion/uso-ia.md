@@ -231,3 +231,52 @@
   errores de referencia (ReferenceError) por typos.
 - Separación de funciones de validación por contexto de uso (creación vs actualización)
   en vez de una única función con lógica condicional.
+
+## Sesión 4 — Etapa 4: Configuración de Testing
+
+22. Prompt: El instructor indicó en clase que los tests debían hacerse mediante
+    mocks de los servicios, sin conexión real a la base de datos, sugiriendo incluso un
+    prompt de IA específico para ese fin ("mock de los servicios para probarlos sin
+    conectarse a la base de datos"). Se consultó qué implicaba esto y cuál sería el plan
+    a seguir.
+    Resultado: Se explicó el concepto de mockear services (reemplazar las funciones
+    reales por versiones controladas que no acceden a PostgreSQL), y cómo esto resolvía
+    directamente una de las 3 decisiones pendientes (deja de ser necesaria una base de
+    datos de test separada, ya que ningún test toca la base real). Se estableció un plan
+    de trabajo: estructura `src/tests/` con un archivo por entidad, uso de `vi.mock()` /
+    `vi.spyOn()` de Vitest combinado con Supertest para requests HTTP simuladas contra la
+    `app` real, cubriendo un mínimo de 6 casos entre éxito y error según la rúbrica.
+
+    ![Condiciones para arrancar creación de tests](./capturas/19.png)
+
+23. Prompt: Análisis crítico de un ejemplo de tests de un compañero (tests de
+    integración contra base de datos real).
+    Resultado: Se identificaron problemas del ejemplo (dependencia de datos
+    hardcodeados/frágiles, validaciones no implementadas en el código real, limpieza
+    de datos incompleta ante fallos) y se decidió no adoptarlo, priorizando la
+    indicación explícita del instructor de usar mocks sin conexión a base de datos.
+
+    ![Ejemplo dado de un compañero](./capturas/20.png)
+
+24. Prompt: Diagnóstico iterativo de un error persistente donde el mock de un service
+    no se aplicaba y el test terminaba ejecutando código real contra PostgreSQL
+    (error de conexión).
+    Resultado: Se identificó la causa raíz - mezclar sintaxis import (ESM) y require
+    (CommonJS) para los mismos módulos genera instancias duplicadas en memoria con
+    cachés de módulos independientes. Solución: usar import solo para paquetes
+    externos ESM-only (vitest, supertest) y require para módulos propios del
+    proyecto, unificando la caché de módulos y permitiendo que vi.spyOn mockeara
+    correctamente el objeto real compartido con el controller.
+
+    ![Error de compatibilidad por require/import](./capturas/21.png)
+
+**Aprendizajes clave:**
+
+- Criterio para evaluar críticamente ejemplos de código de terceros antes de adoptarlos
+  (contra la consigna, contra el propio código, y contra la rúbrica).
+- Concepto de mocks de servicios como estrategia de testing aislado, sin dependencia
+  de infraestructura externa (base de datos).
+- Interoperabilidad entre sistemas de módulos ESM y CommonJS en Node.js, y su impacto
+  en el mockeo de módulos con Vitest.
+- Uso de vi.spyOn sobre un objeto real como alternativa robusta a vi.mock en proyectos
+  CommonJS.

@@ -148,3 +148,32 @@
   manejo de errores"
 
 ## CRUD COMPLETO DEL PROYECTO (Authors + Posts): ✅
+
+## Etapa 4 (inicio) — Configuración de Testing con Vitest + Supertest (fecha: 07/09/2026)
+
+- Instalación de `vitest` y `supertest` como devDependencies (no se usan en producción).
+- Script `test` actualizado en `package.json` a `vitest run` (modo no interactivo, apto
+  para CI/CD y corrección).
+- Definición de estrategia de testing según indicación del instructor: mockear los
+  services (sin conexión real a la base de datos), en vez de tests de integración
+  contra una base de datos real.
+- Troubleshooting significativo durante la configuración inicial:
+    1. Vitest no puede importarse con `require()` (es un paquete ESM-only) — se resolvió
+       usando `import` para las utilidades de Vitest/Supertest.
+    2. El auto-mock de Vitest (`vi.mock('ruta')` sin factory) resultó inconsistente con
+       módulos CommonJS: la función mockeada no se aplicaba, y el test terminaba
+       ejecutando código real contra la base de datos (error de conexión por falta de
+       variables de entorno en el contexto de test).
+    3. Causa raíz identificada: mezclar `import` (procesado por el motor ESM/Vite de
+       Vitest) con `require()` (CommonJS nativo de Node) para los mismos módulos
+       propios generaba DOS instancias distintas del mismo archivo en memoria (una por
+       cada sistema de módulos), por lo que mockear una no afectaba a la otra.
+    4. Solución adoptada: usar `import` únicamente para paquetes externos ESM
+       (`vitest`, `supertest`), y `require()` para todos los módulos propios del
+       proyecto (`app`, `authorsService`, etc.), garantizando que compartan la misma
+       caché de módulos de Node. Con esto, `vi.spyOn(objeto, 'metodo')` sobre el
+       objeto real (no vi.mock del módulo completo) permitió mockear correctamente.
+- Primer test funcional: `GET /authors` devuelve 200 con datos simulados, sin
+  conexión real a PostgreSQL.
+- Commit: "test: configuracion inicial de Vitest + Supertest, primer test con mock
+  via vi.spyOn"
