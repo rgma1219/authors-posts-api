@@ -16,6 +16,10 @@ const options = {
         ],
         servers: [
             {
+                url: "https://authors-posts-api-production.up.railway.app/",
+                description: "Servidor de Producción (Railway)",
+            },
+            {
                 url: "http://localhost:3000",
                 description: "Servidor de desarrollo",
             },
