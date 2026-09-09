@@ -18,7 +18,7 @@ const validateAuthorInput = ({ name, email }) => {
 };
 
 const validatePostInput = ({ author_id, title, content }) => {
-    if (!author_id) {
+    if (!Number.isInteger(author_id) || author_id <= 0) {
         throw new AppError("Debe ingresar un id de Autor", 400);
     }
 

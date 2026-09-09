@@ -212,9 +212,10 @@
   `PostInput`, `PostUpdateInput`, `Error`) mediante `components.schemas`, evitando
   duplicar estructuras en cada endpoint.
 - Documentación completa de los 11 endpoints (5 de authors, 6 de posts) mediante
-  comentarios `@openapi` en `authors.routes.js` y `posts.routes.js`, incluyendo
-  parámetros, request bodies, y todas las respuestas posibles (200/201/204, 400,
-  404, 409) con sus schemas correspondientes.
+  archivos dedicados en `src/docs/` (`authors.openapi.js` y `posts.openapi.js`),
+  manteniendo los comentarios `@openapi` fuera de las rutas e incluyendo parámetros,
+  request bodies y todas las respuestas posibles (200/201/204, 400, 404, 409) con
+  sus schemas correspondientes.
 - Documentación explícita en `PUT /posts/:id` sobre el comportamiento de `published`
   al no enviarse (se reinicia a `false`), coherente con la nota ya registrada en la
   Etapa 3.

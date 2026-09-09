@@ -179,9 +179,11 @@ src/
 ├── config/          Configuración de Swagger
 ├── controllers/     Controladores HTTP
 ├── db/              Pool de conexión PostgreSQL
+├── docs/             Documentación OpenAPI de los endpoints
 ├── middlewares/     Logging y manejo de errores
 ├── routes/          Rutas de authors y posts
 ├── services/        Lógica de acceso a datos
+├── tests/            Tests automatizados de la API
 └── utils/            Validadores y utilidades
 scripts/              Setup y seed de la base de datos
 server.js             Punto de entrada de la aplicación

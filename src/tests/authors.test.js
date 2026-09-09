@@ -118,3 +118,63 @@ describe("POST /authors", () => {
         expect(authorsService.create).not.toHaveBeenCalled();
     });
 });
+
+describe("PUT /authors/:id", () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it("devuelve 200 y el author actualizado", async () => {
+        const updatedAuthor = {
+            id: 10,
+            name: "Autor Actualizado",
+            email: "actualizado@test.com",
+            bio: "Nueva bio",
+        };
+
+        vi.spyOn(authorsService, "update").mockResolvedValue(updatedAuthor);
+
+        const res = await request(app).put("/authors/10").send(updatedAuthor);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual(updatedAuthor);
+        expect(authorsService.update).toHaveBeenCalledWith("10", {
+            name: updatedAuthor.name,
+            email: updatedAuthor.email,
+            bio: updatedAuthor.bio,
+        });
+    });
+
+    it("devuelve 409 cuando el email ya está en uso", async () => {
+        vi.spyOn(authorsService, "update").mockRejectedValue(
+            new AppError("El email ya está en uso", 409),
+        );
+
+        const res = await request(app).put("/authors/10").send({
+            name: "Autor",
+            email: "repetido@test.com",
+        });
+
+        expect(res.statusCode).toBe(409);
+        expect(res.body).toEqual({
+            status: "error",
+            message: "El email ya está en uso",
+        });
+    });
+});
+
+describe("DELETE /authors/:id", () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it("devuelve 204 cuando el author se elimina", async () => {
+        vi.spyOn(authorsService, "remove").mockResolvedValue({ id: 10 });
+
+        const res = await request(app).delete("/authors/10");
+
+        expect(res.statusCode).toBe(204);
+        expect(res.body).toEqual({});
+        expect(authorsService.remove).toHaveBeenCalledWith("10");
+    });
+});
