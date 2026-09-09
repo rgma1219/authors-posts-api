@@ -30,8 +30,8 @@ La relación entre autores y publicaciones se modela mediante `posts.author_id`.
 1. Clonar el repositorio y entrar en la carpeta del proyecto:
 
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
-    cd api-miniblog_ReyGabriel
+    git clone https://github.com/rgma1219/authors-posts-api
+    cd authors-posts-api
     ```
 
 2. Instalar las dependencias:
