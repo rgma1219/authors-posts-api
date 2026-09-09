@@ -33,7 +33,11 @@ const createPost = asyncHandler(async (req, res) => {
         content,
         published,
     });
-    res.status(201).json(newPost);
+    res.status(201).json({
+        status: "success",
+        message: "Post creado correctamente",
+        id: newPost.id,
+    });
 });
 
 const updatePost = asyncHandler(async (req, res) => {

@@ -28,7 +28,7 @@ const getByAuthorId = async (author_id) => {
 const create = async ({ author_id, title, content, published }) => {
     await authorsService.getById(author_id);
     const result = await pool.query(
-        "INSERT INTO posts (author_id, title, content, published) VALUES ($1, $2, $3, $4) RETURNING *",
+        "INSERT INTO posts (author_id, title, content, published) VALUES ($1, $2, $3, $4) RETURNING id",
         [author_id, title, content, published || false],
     );
     return result.rows[0];

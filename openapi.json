@@ -214,7 +214,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Post"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Post creado correctamente"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "example": 15
+                    }
+                  }
                 }
               }
             }
@@ -458,7 +472,21 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Author"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Author creado correctamente"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "example": 10
+                    }
+                  }
                 }
               }
             }

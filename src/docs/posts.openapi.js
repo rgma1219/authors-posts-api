@@ -89,7 +89,17 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Post creado correctamente
+ *                 id:
+ *                   type: integer
+ *                   example: 15
  *       400:
  *         description: Datos inválidos (falta author_id, title o content)
  *         content:

@@ -60,7 +60,17 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Author'
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Author creado correctamente
+ *                 id:
+ *                   type: integer
+ *                   example: 10
  *       400:
  *         description: Datos inválidos (falta name, email o formato incorrecto)
  *         content:

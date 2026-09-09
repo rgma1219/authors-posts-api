@@ -21,7 +21,7 @@ const getById = async (id) => {
 const create = async ({ name, email, bio }) => {
     try {
         const result = await pool.query(
-            "INSERT INTO authors (name, email, bio) VALUES ($1, $2, $3) RETURNING *",
+            "INSERT INTO authors (name, email, bio) VALUES ($1, $2, $3) RETURNING id",
             [name, email, bio || null],
         );
         return result.rows[0];

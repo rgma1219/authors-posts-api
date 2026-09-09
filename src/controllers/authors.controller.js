@@ -19,7 +19,11 @@ const createAuthor = asyncHandler(async (req, res) => {
     validateAuthorInput({ name, email });
 
     const newAuthor = await authorsService.create({ name, email, bio });
-    res.status(201).json(newAuthor);
+    res.status(201).json({
+        status: "success",
+        message: "Author creado correctamente",
+        id: newAuthor.id,
+    });
 });
 
 const updateAuthor = asyncHandler(async (req, res) => {

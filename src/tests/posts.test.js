@@ -47,16 +47,18 @@ describe("POST /posts", () => {
 
         vi.spyOn(postsService, "create").mockResolvedValue(fakeNewPost);
 
-        const res = await request(app)
-            .post("/posts")
-            .send({
-                author_id: 2,
-                title: "Nuevo Post",
-                content: "Contenido del nuevo post",
-            });
+        const res = await request(app).post("/posts").send({
+            author_id: 2,
+            title: "Nuevo Post",
+            content: "Contenido del nuevo post",
+        });
 
         expect(res.statusCode).toBe(201);
-        expect(res.body).toEqual(fakeNewPost);
+        expect(res.body).toEqual({
+            status: "success",
+            message: "Post creado correctamente",
+            id: fakeNewPost.id,
+        });
         expect(postsService.create).toHaveBeenCalledTimes(1);
     });
 });

@@ -95,7 +95,11 @@ describe("POST /authors", () => {
             .send({ name: "Nuevo Autor", email: "nuevo@test.com" });
 
         expect(res.statusCode).toBe(201);
-        expect(res.body).toEqual(fakeNewAuthor);
+        expect(res.body).toEqual({
+            status: "success",
+            message: "Author creado correctamente",
+            id: fakeNewAuthor.id,
+        });
         expect(authorsService.create).toHaveBeenCalledTimes(1);
     });
 
