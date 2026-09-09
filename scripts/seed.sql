@@ -2,6 +2,7 @@
 -- TRUNCATE con RESTART IDENTITY reinicia también los contadores de SERIAL (id vuelve a empezar en 1)
 -- CASCADE acá es necesario porque "posts" depende de "authors"
 TRUNCATE TABLE posts, authors RESTART IDENTITY CASCADE;
+SET client_encoding = 'UTF8';
 
 -- Authors de prueba
 INSERT INTO authors (name, email, bio) VALUES
